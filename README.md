@@ -1,24 +1,55 @@
-# README
+# 💰 Finance Tracker
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A simple Ruby on Rails web application for tracking personal income and expenses. Users can log transactions, categorize them, and view a live financial summary.
 
-Things you may want to cover:
+---
 
-* Ruby version
+## 🚀 Features
 
-* System dependencies
+- Add, view, and delete financial transactions
+- Categorize transactions (e.g. income, rent, groceries)
+- Automatic calculation of:
+  - ✅ Total income
+  - ❌ Total expenses
+  - 💵 Balance
+- Color-coded transaction amounts (green for income, red for expenses)
+- Clean and responsive layout
 
-* Configuration
+---
 
-* Database creation
+## 🛠️ Tech Stack
 
-* Database initialization
+- **Ruby on Rails 8**
+- **PostgreSQL** (as database)
+- **HTML + ERB**
+- **CSS** (custom styling via `application.css`)
+- **Turbo (Hotwire)** for fast page updates
 
-* How to run the test suite
+---
 
-* Services (job queues, cache servers, search engines, etc.)
+---
 
-* Deployment instructions
+## ⚙️ Getting Started
 
-* ...
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/your-username/rails-finance-tracker.git
+cd rails-finance-tracker
+```
+
+### 2. Install Dependencies 
+
+```bash
+bundle install
+```
+### 3. Set up the Database
+
+```bash
+rails db:create
+rails db:migrate
+```
+## 4. Start the Server
+```bash
+rails server
+```
