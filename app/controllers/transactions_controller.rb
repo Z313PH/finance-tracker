@@ -3,11 +3,15 @@ class TransactionsController < ApplicationController
 
   # GET /transactions or /transactions.json
   def index
-  @transactions = Transaction.order(occurred_on: :desc)
+    @transactions = Transaction.order(occurred_on: :desc)
 
-  @income = Transaction.where("amount > 0").sum(:amount)
-  @expenses = Transaction.where("amount < 0").sum(:amount).abs
-  @balance = @income - @expenses
+    @income = @transactions.where(category: "Income").sum(:amount)
+    @expenses = @transactions.where(category: "Expense").sum(:amount)
+    @savings = @transactions.where(category: "Savings").sum(:amount)
+    @giving = @transactions.where(category: "Giving").sum(:amount)
+
+    @balance = @income - @expenses - @giving - @savings
+
   end
 
   # GET /transactions/1 or /transactions/1.json
@@ -25,20 +29,23 @@ class TransactionsController < ApplicationController
 
   # POST /transactions or /transactions.json
   def create
-    @transaction = Transaction.new(transaction_params)
+  @transaction = Transaction.new(transaction_params)
 
-    respond_to do |format|
-      if @transaction.save
-        format.html { redirect_to @transaction, notice: "Transaction was successfully created." }
-        format.json { render :show, status: :created, location: @transaction }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @transaction.errors, status: :unprocessable_entity }
-      end
-    end
+  case @transaction.category
+  when "Expense"
+    @transaction.amount = -@transaction.amount.abs
+  when "Income", "Savings", "Giving"
+    @transaction.amount = @transaction.amount.abs
   end
 
-  # PATCH/PUT /transactions/1 or /transactions/1.json
+  if @transaction.save
+    redirect_to transactions_path, notice: "Transaction created successfully."
+  else
+    render :new
+  end
+end
+
+
   def update
     respond_to do |format|
       if @transaction.update(transaction_params)
@@ -51,12 +58,12 @@ class TransactionsController < ApplicationController
     end
   end
 
-  # DELETE /transactions/1 or /transactions/1.json
+ 
   def destroy
     @transaction.destroy!
 
     respond_to do |format|
-      format.html { redirect_to transactions_path, status: :see_other, notice: "Transaction was successfully destroyed." }
+      format.html { redirect_to transactions_path, status: :see_other, notice: "Transaction was successfully deleted." }
       format.json { head :no_content }
     end
   end

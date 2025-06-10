@@ -64,6 +64,15 @@ tr:nth-child(even) {
   color: red;
   font-weight: bold;
 }
+.savings {
+  color: seagreen;
+  font-weight: bold;
+}
+
+.giving {
+  color: teal;
+  font-weight: bold;
+}
 
 /* Buttons and Links */
 a {
